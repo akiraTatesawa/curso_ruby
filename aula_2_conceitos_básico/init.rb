@@ -10,7 +10,7 @@ class OneBitChallenge
     print 'Type your age: '
     age = gets.chomp.to_i
 
-    puts "Name: #{name}\nAge: #{age}"
+    print "Name: #{name}\nAge: #{age}"
   end
 
   # @param name [String]
@@ -32,10 +32,10 @@ class OneBitChallenge
     division = n1 / n2
     subtraction = n1 - n2
 
-    puts "Sum: #{sum}"
-    puts "Product: #{product}"
-    puts "Division: #{division}"
-    puts "Subtraction: #{subtraction}"
+    print "Sum: #{sum}"
+    print "Product: #{product}"
+    print "Division: #{division}"
+    print "Subtraction: #{subtraction}"
   end
 end
 

@@ -15,7 +15,7 @@ class ConditionalStructure
               'normal'
             end
 
-    puts "The lunch is #{lunch} today!"
+    print "The lunch is #{lunch} today!"
   end
 
   # Example of Unless Modifier
@@ -26,9 +26,9 @@ class ConditionalStructure
     status = 'closed'
     change_check = 'OK' unless status == 'open'
 
-    puts "Product Status: #{status}"
-    puts 'Can the product be changed?'
-    puts change_check
+    print "Product Status: #{status}"
+    print 'Can the product be changed?'
+    print change_check
   end
 
   # Example of Case Statement
@@ -39,15 +39,15 @@ class ConditionalStructure
 
     case month
     when 1..3
-      puts 'você nasceu no começo do ano'
+      print 'você nasceu no começo do ano'
     when 9..12
-      puts 'você nasceu no final do ano'
+      print 'você nasceu no final do ano'
     when 4..6
-      puts 'você nasceu na primeira metade do ano'
+      print 'você nasceu na primeira metade do ano'
     when 7..9
-      puts 'você nasceu na segunda metade do ano'
+      print 'você nasceu na segunda metade do ano'
     else
-      puts 'Não foi possível identificar...'
+      print 'Não foi possível identificar...'
     end
   end
 end
