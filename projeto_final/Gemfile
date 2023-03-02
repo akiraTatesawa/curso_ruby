@@ -1,0 +1,7 @@
+# frozen_literal_string: true
+
+source 'https://rubygems.org'
+
+gem 'rest-client'
+
+
