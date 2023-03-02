@@ -3,71 +3,64 @@
 require 'net/http'
 require 'json'
 require 'uri'
+require 'colorize'
+
+require_relative 'customer'
+require_relative 'customer_services'
 
 # Registration App
-module Registration
-  # Represents a customer
-  class Customer
-    # @param [String] cpf
-    # @param [String] name
-    # @param [String] birthday
-    def initialize(cpf, name, birthday)
-      @cpf = cpf
-      @name = name
-      @birthday = birthday
-    end
+class Application
+  def init
+    system 'clear'
 
-    # Create a customer hash with its data
-    # @return [Hash]
-    def customer_to_hash
-      {
-        'cpf': @cpf, 'name': @name, 'birthday': @birthday
-      }
-    end
+    puts 'Operações:'.colorize(color: :blue, mode: :bold)
+    puts '(1) Criar um cliente'
+    puts '(2) Buscar um cliente'
+    puts '(0) Sair'
+
+    print 'Digite a operação: '
+    # @type [Integer]
+    operation = gets.chomp.to_i
+
+    handle_operation(operation)
   end
 
-  # Send Customer Service
-  class SendCustomer
-    # @param [Customer] customer
-    def initialize(customer)
-      @customer = customer
-    end
+  private
 
-    def post_customer
-      uri = URI('https://igma-back.onrender.com/customers')
+  def create_customer
+    puts "\nCriação de cliente".colorize(color: :blue, mode: :bold)
+    print 'Nome: '
+    name = gets.chomp
+    print 'CPF: '
+    cpf = gets.chomp
+    print 'Data de Nascimento: '
+    birthday = gets.chomp
 
-      Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
-        request = Net::HTTP::Post.new(uri, 'Content-Type' => 'application/json')
-        request.body = @customer.customer_to_hash.to_json
+    customer = Customer.new(cpf, name, birthday)
 
-        response = http.request(request) # Net::HTTPResponse object
+    CustomerServices::CreateCustomer.new(customer).post_customer
+  end
 
-        puts "response #{response.body}"
+  def retrieve_customer
+    puts "\nBusca de Cliente".colorize(color: :blue, mode: :bold)
+    print 'CPF: '
+    cpf = gets.chomp
 
-        save_response(response)
-      end
-    end
+    CustomerServices::GetCustomer.new(cpf).retrieve_customer
+  end
 
-    private
-
-    def save_response(response)
-      File.open('customer_reponse.json', 'w') { |line| line.puts(response.body) }
+  # @param [Integer] operation
+  def handle_operation(operation)
+    case operation
+    when 1
+      create_customer
+    when 2
+      retrieve_customer
+    else
+      puts 'Aplicação encerrada...'
     end
   end
 end
 
-def main
-  puts 'Digite os dados do cliente'
-  print 'nome: '
-  name = gets.chomp
-  print 'cpf: '
-  cpf = gets.chomp
-  print 'aniversario: '
-  birthday = gets.chomp
-
-  customer = Registration::Customer.new(cpf, name, birthday)
-
-  Registration::SendCustomer.new(customer).post_customer
-end
-
-main
+app = Application.new
+app.init
